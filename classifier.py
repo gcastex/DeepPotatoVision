@@ -27,9 +27,10 @@ def load_data_set(batch_size = 20, set = 'train'):
     data_loader = torch.utils.data.DataLoader(
         ImageList(root=root_path, fileList=data_list,
         transform=transforms.Compose([
+        transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
           std=[0.229, 0.224, 0.225]),
-        transforms.ToTensor(),])),
+        ])),
         batch_size=batch_size, shuffle=False, #True,
         #num_workers=args.workers,
         pin_memory=True)
