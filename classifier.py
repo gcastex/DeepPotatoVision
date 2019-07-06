@@ -2,7 +2,7 @@ import torch
 import torchvision.models as models
 import torch.optim as optim
 from torchvision import datasets, transforms
-from LightCNN_master.load_imglist import ImageList
+from load_imglist import ImageList
 
 #savefile_model = 'classifier_model/vgg16_pretrained.pt'
 #vgg16 = models.vgg16(pretrained=True)
