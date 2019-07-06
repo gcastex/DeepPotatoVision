@@ -3,6 +3,7 @@ import torchvision.models as models
 import torch.optim as optim
 from torchvision import datasets, transforms
 from load_imglist import ImageList
+import torch.nn.functional as F
 
 #savefile_model = 'classifier_model/vgg16_pretrained.pt'
 #vgg16 = models.vgg16(pretrained=True)
@@ -54,6 +55,7 @@ def train(
         data, target = data.to(device), target.to(device)
         optimizer.zero_grad()
         output = model(data)
+        loss = F.cross_entropy(output, target)
         loss.backward()
         optimizer.step()
         if batch_idx % print_interval == 0:
@@ -62,8 +64,8 @@ def train(
                   epoch, batch_idx * len(data), len(train_loader.dataset),
                   100.0 * batch_idx / len(train_loader), loss.item(),))
         if batch_idx % eval_interval == 0:
-            acc_train = evaluate(model, device, train_loader_eval, training = True)
-            acc_test = evaluate(model, device, test_loader_eval)
+            acc_train = evaluate(model, device, train_loader, training = True)
+            acc_test = evaluate(model, device, test_loader)
             logs.append((epoch, batch_idx, acc_train, acc_test))
     return logs
 
