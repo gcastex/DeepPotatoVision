@@ -27,14 +27,16 @@ class ImageList(data.Dataset):
         self.imgList   = list_reader(fileList)
         self.transform = transform
         self.loader    = loader
-
     def __getitem__(self, index):
         imgPath, target = self.imgList[index]
         img = self.loader(os.path.join(self.root, imgPath))
-
         if self.transform is not None:
             img = self.transform(img)
         return img, target
-
     def __len__(self):
         return len(self.imgList)
+
+
+def rgb_loader(path):
+    img = Image.open(path)
+    return img
