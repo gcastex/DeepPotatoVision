@@ -35,7 +35,7 @@ Deep Potato Vision provides an indicator of the level of freshness of potatoes u
 
 <p align="center">
   <a>
-    <img src="readme_pictures/pipeline.png" alt="Pipeline" width="600">
+    <img src="readme_pictures/pipeline.png" alt="Pipeline" width="800">
   </a>
 </p>
 
@@ -73,8 +73,19 @@ https://www.dropbox.com/s/5qtv5ria8ssfx66/model.pb?dl=0
 
 ## Classifier
 
-A VGG16 classifier was trained on pictures of potatoes divided into two classes: "Good" and "Bad" potatoes.
+We used transfer learning with a pre-trained VGG16 classifier on which we performed fine-tuning training on a balanced dataset containing pictures of potatoes divided into two classes: "Good" and "Bad" potatoes.
+
+The classifer model can be downloaded here:
+https://ln.sync.com/dl/a2e03f960/gjp929hb-mrca7q39-f24kprzz-54czhvrt
 
 ## Webapp
 
 A webapp provides an evaluation of the level of freshness of the batch of potatoes.
+An example of the results page provided by the webapp is shown below.
+<p align="center">
+  <a>
+    <img src="readme_pictures/DPV.png" alt="webapp" width="400">
+  </a>
+</p>
+
+
