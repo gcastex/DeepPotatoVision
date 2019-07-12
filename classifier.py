@@ -2,13 +2,14 @@ import torch
 import torchvision.models as models
 import torch.optim as optim
 from torchvision import datasets, transforms
-from load_imglist import ImageList
+from load_imglist import ImageList, rgb_loader
 import torch.nn.functional as F
+from torch.autograd import Variable
+from PIL import Image
 
-#savefile_model = 'classifier_model/vgg16_pretrained.pt'
-#vgg16 = models.vgg16(pretrained=True)
+savefile_model = 'classifier_model/vgg16_pretrained.pt'
+vgg16 = models.vgg16(pretrained=True)
 #torch.save(vgg16.state_dict(), savefile_model)
-
 
 def get_model(savefile_model):
     model = models.vgg16()
@@ -24,7 +25,7 @@ def get_model(savefile_model):
 #0.485, 0.456, 0.406],
 #0.229, 0.224, 0.225]),
 def load_data_set(batch_size = 20, set = 'train'):
-    root_path = '/Users/guillaume/Documents/Soft/Hackbyte/Data/training/'
+    root_path = '/Users/benjaminchew/Documents/GitHub/DeepPotatoVision/'
     data_list = root_path+set+'.txt'
     data_loader = torch.utils.data.DataLoader(
         ImageList(root=root_path, fileList=data_list,
@@ -33,7 +34,7 @@ def load_data_set(batch_size = 20, set = 'train'):
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
         std=[0.229, 0.224, 0.225]),
         ]),loader=rgb_loader),
-        batch_size=batch_size, shuffle=False, #True,
+        batch_size=batch_size, shuffle=True, #True,
         #num_workers=args.workers,
         pin_memory=True)
     return data_loader
@@ -114,7 +115,21 @@ def train_classifier(epochs=10, cmdline_args=None):
                             model, device, optimizer, epoch
                             )
     print("\n\n\n")
-    torch.save(seed_used, savefile_seed)
+    #torch.save(seed_used, savefile_seed)
     file_trained_model = dir+'trained_classifier.pt'
     torch.save(model.state_dict(), file_trained_model)
     return logs_train
+
+def img_process(image_file):
+    
+    image_file = Image.open(image_file)
+
+    min_img_size = 224  # Size for PyTorch's pretrained models.
+    transform_pipeline = transforms.Compose([transforms.Resize(min_img_size),
+                                         transforms.ToTensor(),
+                                         transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                                              std=[0.229, 0.224, 0.225])])
+    img = transform_pipeline(image_file)
+    img = img.unsqueeze(0)
+    img = Variable(img)
+    return img
